@@ -1,3 +1,9 @@
+/**
+ * 简单的Redis
+ * @Author: Dejan - QQ:673008865
+ * @Include: hiredis
+ */
+
 #include <iostream>
 #include "SimpleRedis.h"
 using namespace std;
@@ -20,8 +26,8 @@ int main()
 		/* Set a key */
 		reply = rd->exec("SET %s %s", "foo", "helloword!");
 		cout<<reply->str<<endl;
-		
-		
+
+
 		// 释放内存
 		rd->destroy();
 		reply = NULL;

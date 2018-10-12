@@ -3,6 +3,7 @@
  * @Author: Dejan - QQ:673008865
  * @Include: hiredis
  */
+
 #include "SimpleRedis.h"
 
 /**

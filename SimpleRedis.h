@@ -1,3 +1,9 @@
+/**
+ * 简单的Redis
+ * @Author: Dejan - QQ:673008865
+ * @Include: hiredis
+ */
+
 #pragma once
 #include <hiredis.h>
 #include <cstdlib>
