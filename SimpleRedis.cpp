@@ -12,14 +12,15 @@
  */
 SimpleRedis::SimpleRedis() throw(std::runtime_error)
 {
-	rd_handle = redisConnectWithTimeout(rd_host, rd_port, rd_timeout);
+	rd_handle = redisConnect(rd_host, rd_port);
 	if ( NULL == rd_handle || rd_handle->err )
 	{
 		if (rd_handle)
 		{	
+			std::string errstr = std::string("Connection error: ") + rd_handle->errstr;
 			redisFree(rd_handle);
 			rd_handle = NULL;
-			throw std::runtime_error( std::string("Connection error: ") + rd_handle->errstr );
+			throw std::runtime_error( errstr );
 		}
 		else
 		{
@@ -36,14 +37,15 @@ SimpleRedis::SimpleRedis() throw(std::runtime_error)
 SimpleRedis::SimpleRedis(const char *host, const int port) throw(std::runtime_error)
 	:rd_host(host),rd_port(port)
 {
-	rd_handle = redisConnectWithTimeout(rd_host, rd_port, rd_timeout);
+	rd_handle = redisConnect(rd_host, rd_port);
 	if ( NULL == rd_handle || rd_handle->err )
 	{
 		if (rd_handle)
 		{	
+			std::string errstr = std::string("Connection error: ") + rd_handle->errstr;
 			redisFree(rd_handle);
 			rd_handle = NULL;
-			throw std::runtime_error( std::string("Connection error: ") + rd_handle->errstr );
+			throw std::runtime_error( errstr );
 		}
 		else
 		{
@@ -53,7 +55,7 @@ SimpleRedis::SimpleRedis(const char *host, const int port) throw(std::runtime_er
 }
 
 /**
- * 有参构造1
+ * 有参构造2
  * @param  char*          host     IP地址
  * @param  int            port     端口
  * @param  struct timeval timeout  超时时间设置
@@ -66,9 +68,10 @@ SimpleRedis::SimpleRedis(const char *host, const int port, const struct timeval 
 	{
 		if (rd_handle)
 		{	
+			std::string errstr = std::string("Connection error: ") + rd_handle->errstr;
 			redisFree(rd_handle);
 			rd_handle = NULL;
-			throw std::runtime_error( std::string("Connection error: ") + rd_handle->errstr );
+			throw std::runtime_error( errstr );
 		}
 		else
 		{
