@@ -29,7 +29,8 @@ int main()
 
 
 		// 释放内存
-		rd->destroy();
+		delete rd;
+		rd = NULL;
 		reply = NULL;
 	}
 	catch(const exception &e)

@@ -120,3 +120,12 @@ void SimpleRedis::destroy()
 	}
 }
 
+/**
+ * 析构函数
+ */
+SimpleRedis::~SimpleRedis()
+{
+	this->destroy();
+}
+
+

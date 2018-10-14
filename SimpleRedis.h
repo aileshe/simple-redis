@@ -14,6 +14,7 @@ class SimpleRedis
 {
 	public:
 		SimpleRedis() throw(std::runtime_error);
+		~SimpleRedis();
 		SimpleRedis(const char *host, const int port) throw(std::runtime_error);
 		SimpleRedis(const char *host, const int port, const struct timeval timeout)
 			throw(std::runtime_error);
