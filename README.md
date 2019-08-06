@@ -9,37 +9,51 @@ git clone https://github.com/aileshe/simple-redis.git
 ## 使用 DEMO:
 ```
 #include <iostream>
-#include "SimpleRedis.h"
+#include <memory>
+#include "SimpleRedis.hpp"
 using namespace std;
 
-int main()
+int main(int argc, char **argv)
 {
-	try{
-		//SimpleRedis *rd = new SimpleRedis();
-		//SimpleRedis *rd = new SimpleRedis("127.0.0.1", 6379);
-
-		struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-		SimpleRedis *rd = new SimpleRedis("127.0.0.1", 6379, timeout);
-
+	try
+	{
+		unique_ptr<SimpleRedis> redis(new SimpleRedis);
 		redisReply* reply = NULL;
 
 		/* PING server */
-		reply = rd->exec("PING");
-		cout<<reply->str<<endl;
+		reply = redis->exec("PING");
+		cout << reply->str << endl;
 
 		/* Set a key */
-		reply = rd->exec("SET %s %s", "foo", "helloword!");
-		cout<<reply->str<<endl;
-		
-		
-		// 释放内存
-		delete rd;
-		rd = NULL;
-		reply = NULL;
+		reply = redis->exec("SET %s %s", "food", "hello word!");
+		cout << reply->str << endl;
+
+		/* Get key */
+		reply = redis->exec("GET %s", "food");
+		cout << reply->str << endl;
+
+		/* 发布与订阅 (pub/sub) */
+		// 测试发布: > publish _TEST_ "hi Dejan!"
+		reply = redis->exec("subscribe _TEST_");
+		redis->freeReply();
+		while (redisGetReply(redis->get(), (void **)&reply) == REDIS_OK)
+		{
+			if (NULL == reply) return 0;
+
+			if (reply->type == REDIS_REPLY_ARRAY)
+			{
+				for (int i = 0; i < reply->elements; i++)
+				{
+					printf("[%d] => %s \n", i, reply->element[i]->str);
+				}
+			}
+		}
+
+		// 无需做任何清理... 就这么简单!!  -- Dejan
 	}
-	catch(const exception &e)
+	catch (exception& e)
 	{
-		cerr<<"Get exception : "<<e.what()<<endl;
+		cout << e.what() << endl;
 	}
 
 
